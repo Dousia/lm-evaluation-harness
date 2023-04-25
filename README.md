@@ -21,6 +21,9 @@
 - 其他任务
   - 情感分析任务ChenSentiCorp：注册为chnsenticorp，情感倾向二分类，acc指标，结果越高越好
 
+- 生成任务
+   - 中文评测集Pclue里的dev数据集generate任务：注册为pclue_dev_generate，bleu和chrf结果越高越好，ter相反，chrf和ter仅供参考，可以只看bleu
+
 ## Overview
 
 This project provides a unified framework to test generative language models on a large number of different evaluation tasks.
