@@ -4,9 +4,6 @@ from typing import List, Union
 import sacrebleu
 import lm_eval.base
 
-from . import chnsenticorp
-from . import nlpcc
-from . import flores200
 from . import superglue
 from . import glue
 from . import arc
@@ -55,7 +52,12 @@ from . import gsm8k
 from . import storycloze
 from . import toxigen
 from . import crowspairs
-
+#导入新任务
+from . import chnsenticorp
+from . import nlpcc
+from . import flores200
+from . import stereosetzh
+from . import coldzh
 
 ########################################
 # Translation tasks
@@ -88,9 +90,12 @@ all_translation_benchmarks = {
 
 
 TASK_REGISTRY = {
+    #注册新任务
     "chnsenticorp": chnsenticorp.ChnSentiCorp,
     "flores200": flores200.Flores200,
     "nlpcc": nlpcc.NLPCC,
+    "stereosetzh": stereosetzh.StereoSetzh,
+    "coldzh":coldzh.Coldzh,
     # GLUE
     "cola": glue.CoLA,
     "mnli": glue.MNLI,

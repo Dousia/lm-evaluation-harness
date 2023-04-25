@@ -3,6 +3,16 @@
 ![](https://github.com/EleutherAI/lm-evaluation-harness/workflows/Build/badge.svg)
 [![codecov](https://codecov.io/gh/EleutherAI/lm-evaluation-harness/branch/master/graph/badge.svg?token=JSG3O2427J)](https://codecov.io/gh/EleutherAI/lm-evaluation-harness)
 
+
+## 已添加任务
+
+- 毒害指标评测
+  - 中文数据集COLD：注册为coldzh
+
+- 偏见指标评测
+  - 翻译后的中文数据集Stereset：注册为stereosetzh
+
+
 ## Overview
 
 This project provides a unified framework to test generative language models on a large number of different evaluation tasks.
