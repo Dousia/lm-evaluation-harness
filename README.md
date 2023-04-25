@@ -7,10 +7,17 @@
 ## 已添加任务
 
 - 毒害指标评测
-  - 中文数据集COLD：注册为coldzh
+  - 中文数据集COLD：注册为coldzh，结果越高越好
 
 - 偏见指标评测
-  - 翻译后的中文数据集Stereset：注册为stereosetzh
+  - 翻译后的中文数据集Stereset：注册为stereosetzh，结果越高越好
+
+- 分类任务评测
+  - 中文评测集Pclue里的dev数据集classify任务：注册为pclue_dev_classify，结果越高越好
+
+- NLI任务评测
+  - 中文评测集Pclue里的dev数据集nli任务：注册为pclue_dev_nli，结果越高越好
+
 
 
 ## Overview

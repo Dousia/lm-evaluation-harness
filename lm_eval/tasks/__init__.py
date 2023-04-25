@@ -58,6 +58,8 @@ from . import nlpcc
 from . import flores200
 from . import stereosetzh
 from . import coldzh
+from . import pclue_dev_classify
+from . import pclue_dev_nli
 
 ########################################
 # Translation tasks
@@ -96,6 +98,8 @@ TASK_REGISTRY = {
     "nlpcc": nlpcc.NLPCC,
     "stereosetzh": stereosetzh.StereoSetzh,
     "coldzh":coldzh.Coldzh,
+    "pclue_dev_classify":pclue_dev_classify.Pclue_dev_classify,
+    "pclue_dev_nli":pclue_dev_nli.Pclue_dev_nli,
     # GLUE
     "cola": glue.CoLA,
     "mnli": glue.MNLI,
