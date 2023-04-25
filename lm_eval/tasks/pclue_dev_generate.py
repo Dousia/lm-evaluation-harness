@@ -8,7 +8,6 @@ TODO: Write a Short Description of the task.
 Homepage: TODO: Add the URL to the task's Homepage here.
 """
 
-from pprint import pprint
 from lm_eval import metrics
 from lm_eval.base import Task, rf
 from typing import List
@@ -29,17 +28,7 @@ except ImportError:
 
 
 _CITATION = """
-@inproceedings{post-2018-call,
-    title = "A Call for Clarity in Reporting {BLEU} Scores",
-    author = "Post, Matt",
-    booktitle = "Proceedings of the Third Conference on Machine Translation: Research Papers",
-    month = oct,
-    year = "2018",
-    address = "Belgium, Brussels",
-    publisher = "Association for Computational Linguistics",
-    url = "https://www.aclweb.org/anthology/W18-6319",
-    pages = "186--191",
-}
+
 """
 
 
@@ -61,18 +50,7 @@ def zh_split(zh_text: List[str]) -> List[str]:
     return [" ".join(jieba.cut(txt.strip())) for txt in zh_text]
 
 
-def ja_split(ja_text: List[str]) -> List[str]:
-    """Japanese splitting"""
-    if not HAS_NAGISA:
-        raise ImportError(
-            "Japanese text splitting requires the `nagisa` package. "
-            "Please install it with:\npip install nagisa"
-        )
-
-    return [" ".join(nagisa.tagging(txt.strip()).words) for txt in ja_text]
-
-
-NO_SPACE_LANG = {"zh": zh_split, "ja": ja_split}
+NO_SPACE_LANG = {"zh": zh_split}
 
 ########################################
 # Tasks
@@ -86,23 +64,6 @@ class Pclue_dev_generate(Task):
 
     DATASET_NAME = "pclue_dev_generate"
 
-    # e.g. ("wmt14", "fr-en")
-    # def __init__(self, sacrebleu_dataset, sacrebleu_language_pair=None):
-    #     self.sacrebleu_dataset = sacrebleu_dataset
-    #     self.sacrebleu_language_pair = sacrebleu_language_pair
-    #     self.src_file = self.ref_file = self.src_data = self.ref_data = None
-
-    #     super().__init__()
-
-    # def download(self, data_dir=None, cache_dir=None, download_mode=None):
-    #     # This caches in the users home dir automatically
-    #     self.src_file, self.ref_file = sacrebleu.download_test_set(
-    #         self.sacrebleu_dataset, self.sacrebleu_language_pair
-    #     )
-    #     self.src_data, self.ref_data = [
-    #         [line.rstrip() for line in sacrebleu.smart_open(file)]
-    #         for file in (self.src_file, self.ref_file)
-    #     ]
 
     def has_training_docs(self):
         """Whether the task has a training set"""
@@ -122,21 +83,25 @@ class Pclue_dev_generate(Task):
         :return: Iterable[obj]
             A iterable of any object, that doc_to_text can handle
         """
-        # return [
-        #     {"src": src, "ref": ref} for src, ref in zip(self.src_data, self.ref_data)
-        # ]
         dataset =  self.dataset["test"]
         return map(self._process_doc, dataset)
+    
+    def _process_doc(self, doc):
+        out_doc = {
+            "input": doc["input"],
+            "target": doc["target"],
+        }
+        return out_doc
 
     def doc_to_text(self, doc):
     
         return doc["input"]
 
-    # def should_decontaminate(self):
-    #     return True
+    def should_decontaminate(self):
+        return True
 
-    # def doc_to_decontamination_query(self, doc):
-    #     return doc["src"]
+    def doc_to_decontamination_query(self, doc):
+        return doc["input"]
 
     def doc_to_target(self, doc):
         # This shows a single target, though there may be multiple targets in a lang test
@@ -194,10 +159,3 @@ class Pclue_dev_generate(Task):
             "chrf": True,
             "ter": False,
         }
-
-    # def __str__(self):
-    #     language_codes = self.sacrebleu_language_pair.split("-")
-    #     src_lang = code_to_language(language_codes[0])
-    #     tar_lang = code_to_language(language_codes[1])
-    #     return f"{self.sacrebleu_dataset.upper()} {src_lang} to {tar_lang} Task"
-
