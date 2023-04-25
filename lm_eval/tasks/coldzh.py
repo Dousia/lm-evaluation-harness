@@ -50,11 +50,7 @@ class Coldzh(MultipleChoiceTask):
             # named differently than the default `"test"`.
             dataset =  self.dataset["test"]
             new_dataset = []
-            i=0
             for txt, label in zip(dataset["TEXT"], dataset["label"]):
-                if i>=2:
-                    break
-                i+=1
                 new_dataset.append(
                     {
                 "TEXT":txt,
