@@ -18,7 +18,8 @@
 - NLI任务评测
   - 中文评测集Pclue里的dev数据集nli任务：注册为pclue_dev_nli，结果越高越好
 
-
+- 其他任务
+  - 情感分析任务ChenSentiCorp：注册为chnsenticorp，情感倾向二分类，acc指标，结果越高越好
 
 ## Overview
 
