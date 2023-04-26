@@ -8,29 +8,29 @@
 
 **任务文件在lm-evaluation-harness/lm_eval/tasks中，数据集路径在对应任务文件的DATASET_PATH变量中设置。**
 
-- 毒害指标评测
+- 生成任务
 
 |注册名|任务文件|说明|评价指标|
 |:----:|:----|:----:|:-----:|
-| coldzh      | coldzh.py  |中文毒害数据| |
+|pclue_dev_generate|pclue_dev_generate.py|中文评测集Pclue里的dev数据集generate任务|bleu, chrf|
 
-- 偏见指标评测
+- 文本摘要任务
 
 |注册名|任务文件|说明|评价指标|
 |:----:|:----|:----:|:-----:|
-| stereosetzh      | stereosetzh.py  || |
+|nlpcc|nlpcc.py|文本摘要能力中文评测数据集nlpcc|bleu, chrf|
 
 - 分类任务评测
 
 |注册名|任务文件|说明|评价指标|
 |:----:|:----|:----:|:-----:|
-| pclue_dev_classify | pclue_dev_classify.py  |中文评测集Pclue的dev数据中classify任务| |
+| pclue_dev_classify | pclue_dev_classify.py  |中文评测集Pclue的dev数据中classify任务| acc |
 
 - NLI任务评测
 
 |注册名|任务文件|说明|评价指标|
 |:----:|:----|:----:|:-----:|
-|pclue_dev_nli|pclue_dev_nli.py|中文评测集Pclue里的dev数据集nli任务||
+|pclue_dev_nli|pclue_dev_nli.py|中文评测集Pclue里的dev数据集nli任务|acc|
 
 - 其他任务
 
@@ -38,11 +38,19 @@
 |:----:|:----|:----:|:-----:|
 |chnsenticorp|chnsenticorp.py|情感分析任务ChenSentiCorp|acc|
 
-- 生成任务
+- - 毒害指标评测
 
 |注册名|任务文件|说明|评价指标|
 |:----:|:----|:----:|:-----:|
-|pclue_dev_generate|pclue_dev_generate.py|中文评测集Pclue里的dev数据集generate任务|**bleu**, chrf|
+| coldzh      | coldzh.py  |中文毒害数据| acc |
+
+- 偏见指标评测
+
+|注册名|任务文件|说明|评价指标|
+|:----:|:----|:----:|:-----:|
+| stereosetzh      | stereosetzh.py  |中文偏见数据集| acc |
+
+
 
 ## Overview
 

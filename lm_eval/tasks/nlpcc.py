@@ -1,28 +1,15 @@
-
-"""
-CoQA: A Conversational Question Answering Challenge
-https://arxiv.org/pdf/1808.07042.pdf
-
-CoQA is a large-scale dataset for building Conversational Question Answering
-systems. The goal of the CoQA challenge is to measure the ability of machines to
-understand a text passage and answer a series of interconnected questions that
-appear in a conversation.
-
-Homepage: https://stanfordnlp.github.io/coqa/
-"""
-import inspect
 import transformers.data.metrics.squad_metrics as squad_metrics
 from lm_eval.base import Task, rf, mean
 from itertools import zip_longest
-import os
-import sys
+from lm_eval import metrics
+import jieba
+from nltk.translate.bleu_score import sentence_bleu
+from nltk.translate.chrf_score import sentence_chrf
 
 class NLPCC(Task):
     VERSION = 0
-    file_path = os.path.abspath(__file__)
-    dir_path = file_path[:file_path.rfind('/')]
-    DATASET_PATH = os.path.join(dir_path, '..', 'datasets', 'chnsenticorp')
-    DATASET_NAME = 'chnsenticorp'
+    DATASET_PATH = "lm_eval/datasets/nlpcc"
+    DATASET_NAME = 'nlpcc'
 
     def has_training_docs(self):
         return False
@@ -40,86 +27,25 @@ class NLPCC(Task):
         pass
 
     def test_docs(self):
-        return self.dataset["test"]
+        dataset=self.dataset["test"]
+        a=[]
+        for i,item in enumerate(dataset):
+            a.append(item)
+        return a
 
     def doc_to_text(self, doc):
-        # Given a passage p, the conversation history {q1, a1, . . . qi−1, ai−1}
-        # and a question qi, the task is to predict the answer ai
-        doc_text = doc["story"] + "\n\n"
-        for (q, a) in zip_longest(
-            doc["questions"]["input_text"], doc["answers"]["input_text"][:-1]
-        ):  # omit target answer ai
-            question = f"Q: {q}\n\n"
-            answer = f"A: {a}\n\n" if a is not None else "A:"
-            doc_text += question + answer
-        return doc_text
+        # TODO: Format the query prompt portion of the document example.
+        txt=f"请以概括的语言总结以下文本：\"{doc['content']}\"。"
+        #txt=f"use one sentecen to conclude the following text:\"{doc['content']}\"。\n\n"
+        return txt
 
-    def should_decontaminate(self):
-        return True
+    def doc_to_target(self, doc):
+        # TODO: Fill in the `target` ("gold answer") variable.
+        # The prepended `" "` is required to space out the `doc_to_text` and
+        # `doc_to_target` strings.
+        target = doc["title"]
+        return " " + target
 
-    def doc_to_decontamination_query(self, doc):
-        return doc["story"] + " " + "\n".join(doc["questions"]["input_text"])
-
-    @classmethod
-    def get_answers(cls, doc, turn_id):
-        # Returns unique answers and valid alternatives (Some questions in CoQA have multiple valid answers).
-        answers = []
-        answer_forturn = doc["answers"]["input_text"][turn_id - 1]
-        answers.append(answer_forturn)
-
-        additional_answers = doc.get("additional_answers")
-        if additional_answers:
-            for key in additional_answers:
-                additional_answer_for_turn = additional_answers[key]["input_text"][
-                    turn_id - 1
-                ]
-                if additional_answer_for_turn.lower() not in map(str.lower, answers):
-                    answers.append(additional_answer_for_turn)
-        return answers
-
-    @classmethod
-    def get_answer_choice(self, raw_text):
-        # Function maps answers to CoQA answer categories
-        # ~ 1/5 of the CoQA answers are Yes/No
-        # ~ 2/3 of the CoQA answers are span-based
-        # (answers overlap with the passage ignoring punctuation and case mismatch)
-        if raw_text == "unknown":
-            return "0"
-        if squad_metrics.normalize_answer(raw_text) == "yes":
-            return "1"
-        if squad_metrics.normalize_answer(raw_text) == "no":
-            return "2"
-        return "3"  # Not a yes/no question
-
-    @staticmethod
-    def compute_scores(gold_list, pred):
-        # tests for exact match and on the normalised answer (compute_exact)
-        # test for overlap (compute_f1)
-        f1_sum = 0.0
-        em_sum = 0.0
-        if len(gold_list) > 1:
-            for i in range(len(gold_list)):
-                gold_answers = gold_list[0:i] + gold_list[i + 1 :]
-                # predictions compared against (n) golds and take maximum
-                em_sum += max(
-                    squad_metrics.compute_exact(a, pred) for a in gold_answers
-                )
-                f1_sum += max(squad_metrics.compute_f1(a, pred) for a in gold_answers)
-        else:
-            em_sum += max(squad_metrics.compute_exact(a, pred) for a in gold_list)
-            f1_sum += max(squad_metrics.compute_f1(a, pred) for a in gold_list)
-
-        return {
-            "em": em_sum / max(1, len(gold_list)),
-            "f1": f1_sum / max(1, len(gold_list)),
-        }
-
-    def doc_to_target(self, doc, turnid=None):
-        # Default to prediction of last turn.
-        if turnid is None:
-            turnid = len(doc["questions"]["input_text"])
-        raw_text = doc["answers"]["input_text"][turnid - 1]
-        return " " + raw_text
 
     def construct_requests(self, doc, ctx):
         """Uses RequestFactory to construct Requests and returns an iterable of
@@ -132,7 +58,10 @@ class NLPCC(Task):
             language description, as well as the few shot examples, and the question
             part of the document for `doc`.
         """
-        cont_request = rf.greedy_until(ctx, ["\nQ:"])
+        #cont_request = rf.greedy_until(ctx, ["[EOS]"])
+        #cont_request = rf.greedy_until("i am colin, and i am an artist, and my favourate food is ",["\n"])
+        #cont_request = rf.greedy_until(ctx, ["|endoftext|"])
+        cont_request = rf.greedy_until(ctx, ["\n"])
         return cont_request
 
     def process_results(self, doc, results):
@@ -145,31 +74,36 @@ class NLPCC(Task):
         :param results:
             The results of the requests created in construct_requests.
         """
-        turn_id = len(doc["questions"]["input_text"])
-        gold_list = self.get_answers(doc, turn_id)
-        pred = results[0].strip().split("\n")[0]
-
-        scores = self.compute_scores(gold_list, pred)
+        pred=results[0]
+        gold=doc["title"]
+        pred_fenci = ' '.join(jieba.cut(pred))
+        gold_fenci = ' '.join(jieba.cut(gold))
+        reference = [] 
+        candidate = []
+        reference.append(gold_fenci.split())
+        candidate = (pred_fenci.split())
+        blue_score = sentence_bleu(reference, candidate,weights=(0.25, 0.25, 0.25, 0.25))
+        reference2=(gold_fenci.split())
+        chrf_score=sentence_chrf(reference2, candidate, min_len=1, max_len=2, beta=2)
 
         return {
-            "f1": scores["f1"],
-            "em": scores["em"],
+            "blue": blue_score,
+            "chrf":chrf_score,
         }
 
-    def higher_is_better(self):
-        return {
-            "f1": True,
-            "em": True,
-        }
-
+        
     def aggregation(self):
         return {
-            "f1": mean,
-            "em": mean,
+            "blue": mean,
+            "chrf":mean,
         }
 
-
-
+        
+    def higher_is_better(self):
+        return {
+            "blue": True,
+            "chrf": True,
+        }
 
 
 
