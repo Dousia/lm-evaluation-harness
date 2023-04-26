@@ -174,7 +174,6 @@ class HuggingFaceAutoLM(BaseLM):
             tokenizer=tokenizer,
         )
         self.tokenizer.model_max_length = self.max_length
-
         model_kwargs = {}
         if use_accelerate:
             model_kwargs = _get_accelerate_args(
@@ -428,13 +427,21 @@ class AutoCausalLM(HuggingFaceAutoLM):
         subfolder: str,
         tokenizer: Optional[str] = None,
     ) -> transformers.PreTrainedTokenizer:
-        tokenizer = super()._create_auto_tokenizer(
-            pretrained=pretrained,
-            revision=revision,
-            subfolder=subfolder,
-            tokenizer=tokenizer,
-        )
-        tokenizer.padding_side = "left"
+        if 'LLaMA' in pretrained:
+            tokenizer = self.AUTO_TOKENIZER_CLASS.from_pretrained(
+            pretrained if tokenizer is None else tokenizer,
+            revision=revision + ("/" + subfolder if subfolder is not None else ""),
+            add_eos_token=True,
+            )
+            tokenizer.pad_token = tokenizer.eos_token
+        else:
+            tokenizer = super()._create_auto_tokenizer(
+                pretrained=pretrained,
+                revision=revision,
+                subfolder=subfolder,
+                tokenizer=tokenizer,
+            )
+            tokenizer.padding_side = "left"
         return tokenizer
 
     def _model_call(
