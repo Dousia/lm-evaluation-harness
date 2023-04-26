@@ -9,31 +9,40 @@
 
 - 毒害指标评测
 
-| 注册名       | 任务文件名   |说明          |评价指标
-| ：--------： | ：-------：| ：-------： | ：-------： |
+|注册名|任务文件|说明|评价指标|
+|:----:|:----|:----:|:-----:|
 | coldzh      | coldzh.py  |中文毒害数据| |
-
 
 - 偏见指标评测
 
-| 注册名       | 任务文件名   |说明          |评价指标
-| ：--------： | ：-------：| ：-------： | ：-------： |
+|注册名|任务文件|说明|评价指标|
+|:----:|:----|:----:|:-----:|
 | stereosetzh      | stereosetzh.py  || |
 
 - 分类任务评测
-  - 中文评测集Pclue里的dev数据集classify任务：注册为pclue_dev_classify，结果越高越好
 
-| 注册名       | 任务文件名   |说明          |评价指标
-| ：--------： | ：-------：| ：-------： | ：-------： |
+|注册名|任务文件|说明|评价指标|
+|:----:|:----|:----:|:-----:|
 | pclue_dev_classify | pclue_dev_classify.py  |中文评测集Pclue的dev数据中classify任务| |
+
 - NLI任务评测
-  - 中文评测集Pclue里的dev数据集nli任务：注册为pclue_dev_nli，结果越高越好
+
+|注册名|任务文件|说明|评价指标|
+|:----:|:----|:----:|:-----:|
+|pclue_dev_nli|pclue_dev_nli.py|中文评测集Pclue里的dev数据集nli任务||
 
 - 其他任务
-  - 情感分析任务ChenSentiCorp：注册为chnsenticorp，情感倾向二分类，acc指标，结果越高越好
+
+|注册名|任务文件|说明|评价指标|
+|:----:|:----|:----:|:-----:|
+|chnsenticorp|chnsenticorp.py|情感分析任务ChenSentiCorp|acc|
 
 - 生成任务
    - 中文评测集Pclue里的dev数据集generate任务：注册为pclue_dev_generate，bleu和chrf结果越高越好，ter相反，chrf和ter仅供参考，可以只看bleu
+
+|注册名|任务文件|说明|评价指标|
+|:----:|:----|:----:|:-----:|
+|pclue_dev_generate|pclue_dev_generate.py|中文评测集Pclue里的dev数据集generate任务|**bleu**,ter,chrf|
 
 ## Overview
 
@@ -51,15 +60,9 @@ Features:
 To install `lm-eval` from the github repository main branch, run:
 
 ```bash
-git clone https://github.com/EleutherAI/lm-evaluation-harness
+git clone https://github.com/RekkimiARG/lm-evaluation-harness.git
 cd lm-evaluation-harness
 pip install -e .
-```
-
-To install additional multilingual tokenization and text segmentation packages, you must install the package with the `multilingual` extra:
-
-```bash
-pip install -e ".[multilingual]"
 ```
 
 ## Basic Usage
