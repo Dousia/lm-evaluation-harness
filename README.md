@@ -6,6 +6,7 @@
 
 ## 已添加任务
 
+** 任务文件在lm-evaluation-harness/lm_eval/tasks中，数据集路径在对应任务文件的DATASET_PATH变量中设置。**
 
 - 毒害指标评测
 
@@ -38,7 +39,6 @@
 |chnsenticorp|chnsenticorp.py|情感分析任务ChenSentiCorp|acc|
 
 - 生成任务
-   - 中文评测集Pclue里的dev数据集generate任务：注册为pclue_dev_generate，bleu和chrf结果越高越好，chrf仅供参考，可以只看bleu
 
 |注册名|任务文件|说明|评价指标|
 |:----:|:----|:----:|:-----:|
@@ -73,7 +73,8 @@ pip install -e .
 
 llama huggingface的config中对tokenizer的命名和transformers库中的不一致，导致无法使用AutoTokenizer加载，但是本库的运行默认使用AutoTokenizer。虽然该问题由来已久，但是目前仍没有修复，所以我们要手动改一下transformers的源码。
 
-有两种方法，
+有两种方法:
+
 1.安装好transformers库之后，去对应环境site-packages下找到transformers库，做如下修改：
 
 ```
