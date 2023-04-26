@@ -38,11 +38,11 @@
 |chnsenticorp|chnsenticorp.py|情感分析任务ChenSentiCorp|acc|
 
 - 生成任务
-   - 中文评测集Pclue里的dev数据集generate任务：注册为pclue_dev_generate，bleu和chrf结果越高越好，ter相反，chrf和ter仅供参考，可以只看bleu
+   - 中文评测集Pclue里的dev数据集generate任务：注册为pclue_dev_generate，bleu和chrf结果越高越好，chrf仅供参考，可以只看bleu
 
 |注册名|任务文件|说明|评价指标|
 |:----:|:----|:----:|:-----:|
-|pclue_dev_generate|pclue_dev_generate.py|中文评测集Pclue里的dev数据集generate任务|**bleu**,ter,chrf|
+|pclue_dev_generate|pclue_dev_generate.py|中文评测集Pclue里的dev数据集generate任务|**bleu**, chrf|
 
 ## Overview
 
