@@ -30,8 +30,7 @@ class NLPCC(Task):
         dataset=self.dataset["test"]
         a=[]
         for i,item in enumerate(dataset):
-            if i <=20:
-                a.append(item)
+            a.append(item)
         return a
 
     def doc_to_text(self, doc):
