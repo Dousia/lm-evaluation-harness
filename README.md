@@ -6,7 +6,7 @@
 
 ## 已添加任务
 
-** 任务文件在lm-evaluation-harness/lm_eval/tasks中，数据集路径在对应任务文件的DATASET_PATH变量中设置。**
+**任务文件在lm-evaluation-harness/lm_eval/tasks中，数据集路径在对应任务文件的DATASET_PATH变量中设置。**
 
 - 毒害指标评测
 
