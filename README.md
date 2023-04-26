@@ -65,6 +65,35 @@ cd lm-evaluation-harness
 pip install -e .
 ```
 
+## 其他依赖
+
+运行一些模型的时候可能会报错缺少部分库，比如sentencepiece，安装一下一般就解决了。
+
+## llama tokenizer
+
+llama huggingface的config中对tokenizer的命名和transformers库中的不一致，导致无法使用AutoTokenizer加载，但是本库的运行默认使用AutoTokenizer。虽然该问题由来已久，但是目前仍没有修复，所以我们要手动改一下transformers的源码。
+
+有两种方法，
+1.安装好transformers库之后，去对应环境site-packages下找到transformers库，做如下修改：
+
+```
+replace LlamaTokenizer to LLaMATokenizer
+1. convert_slow_tokenizer.py
+2. models/auto/tokenization_auto.py
+3. models/llama/__init__.py
+4. models/llama/convert_llama_weights_to_hf.py
+5. models/llama/tokenization_llama_fast.py
+6. models/llama/tokenization_llama.py
+```
+
+2. 从这里拉源码安装
+
+```
+git clone https://github.com/vxfla/transformers.git
+cd transformers/
+pip install -e .
+```
+
 ## Basic Usage
 
 > **Note**: When reporting results from eval harness, please include the task versions (shown in `results["versions"]`) for reproducibility. This allows bug fixes to tasks while also ensuring that previously reported scores are reproducible. See the [Task Versioning](#task-versioning) section for more info.
