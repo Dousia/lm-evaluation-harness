@@ -12,12 +12,6 @@ from lm_eval import metrics
 from lm_eval.base import Task, rf
 from typing import List
 
-try:
-    import nagisa
-
-    HAS_NAGISA = True
-except ImportError:
-    HAS_NAGISA = False
 
 try:
     import jieba
@@ -133,7 +127,7 @@ class Pclue_dev_generate(Task):
         return {
             "bleu": ref_pred,
             "chrf": ref_pred,
-            "ter": ref_pred,
+#             "ter": ref_pred,
         }
 
     def aggregation(self):
@@ -145,7 +139,7 @@ class Pclue_dev_generate(Task):
         return {
             "bleu": metrics.bleu,
             "chrf": metrics.chrf,
-            "ter": metrics.ter,
+#             "ter": metrics.ter,
         }
 
     def higher_is_better(self):
@@ -157,5 +151,5 @@ class Pclue_dev_generate(Task):
         return {
             "bleu": True,
             "chrf": True,
-            "ter": False,
+#             "ter": False,
         }
