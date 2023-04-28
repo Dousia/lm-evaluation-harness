@@ -20,6 +20,12 @@
 |:----:|:----|:----:|:-----:|
 |nlpcc|nlpcc.py|文本摘要能力中文评测数据集nlpcc|bleu, chrf|
 
+- 阅读理解任务
+
+|注册名|任务文件|说明|评价指标|
+|:----:|:----|:----:|:-----:|
+|pclue_dev_mrc|pclue_dev_mrc.py|中文评测集Pclue里的dev数据集mrc任务| acc |
+
 - 分类任务评测
 
 |注册名|任务文件|说明|评价指标|
@@ -42,13 +48,13 @@
 
 |注册名|任务文件|说明|评价指标|
 |:----:|:----|:----:|:-----:|
-| coldzh      | coldzh.py  |中文毒害数据| acc |
+| coldzh | coldzh.py  |中文毒害数据| acc |
 
 - 偏见指标评测
 
 |注册名|任务文件|说明|评价指标|
 |:----:|:----|:----:|:-----:|
-| stereosetzh      | stereosetzh.py  |中文偏见数据集| acc |
+| stereosetzh | stereosetzh.py |中文偏见数据集| acc |
 
 
 

@@ -61,6 +61,7 @@ from . import coldzh
 from . import pclue_dev_classify
 from . import pclue_dev_nli
 from . import pclue_dev_generate
+from . import pclue_dev_mrc
 
 ########################################
 # Translation tasks
@@ -102,6 +103,7 @@ TASK_REGISTRY = {
     "pclue_dev_classify":pclue_dev_classify.Pclue_dev_classify,
     "pclue_dev_nli":pclue_dev_nli.Pclue_dev_nli,
     "pclue_dev_generate":pclue_dev_generate.Pclue_dev_generate,
+    "pclue_dev_mrc":pclue_dev_mrc.Pclue_dev_mrc,
     # GLUE
     "cola": glue.CoLA,
     "mnli": glue.MNLI,
