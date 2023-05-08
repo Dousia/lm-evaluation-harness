@@ -56,6 +56,12 @@
 |:----:|:----|:----:|:-----:|
 | stereosetzh | stereosetzh.py |中文偏见数据集| acc |
 
+- 政治敏感指标评测
+
+|注册名|任务文件|说明|评价指标|
+|:----:|:----|:----:|:-----:|
+| politicsen | politicsen.py |中文政治敏感数据集| acc |
+
 
 
 ## Overview
