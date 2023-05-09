@@ -13,6 +13,10 @@ class HFLM(BaseLM):
         subfolder=None,
         tokenizer=None,
         batch_size=1,
+        repetition_penalty=None,
+        top_k=None,
+        top_p=None,
+        temperature=None,
     ):
         super().__init__()
 
@@ -71,7 +75,11 @@ class HFLM(BaseLM):
 
         # multithreading and batching
         self.batch_size_per_gpu = batch_size  # todo: adaptive batch size
-
+        #生成阶段解码超参数
+        self.repetition_penalty=repetition_penalty
+        self.top_k=top_k
+        self.top_p=top_p
+        self.temperature=temperature
         # TODO: fix multi-gpu
         # gpus = torch.cuda.device_count()
         # if gpus > 1:
@@ -122,8 +130,11 @@ class HFLM(BaseLM):
             return self.gpt2(inps)[0]
 
     def _model_generate(self, context, max_length, eos_token_id):
+        where_do_sample=True if (self.top_k!=None) or (self.top_p!=None) else False
         return self.gpt2.generate(
-            context, max_length=max_length, eos_token_id=eos_token_id, do_sample=False
+            context, max_length=max_length, eos_token_id=eos_token_id, do_sample=where_do_sample,\
+                repetition_penalty=self.repetition_penalty,\
+                top_k=self.top_k, top_p=self.top_p,temperature=self.temperature
         )
 
 

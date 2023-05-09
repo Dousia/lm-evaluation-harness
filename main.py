@@ -40,6 +40,10 @@ def parse_args():
     parser.add_argument("--decontamination_ngrams_path", default=None)
     parser.add_argument("--description_dict_path", default=None)
     parser.add_argument("--check_integrity", action="store_true")
+    parser.add_argument("--repetition_penalty", type=float, default=None)
+    parser.add_argument("--top_k", type=int, default=None)
+    parser.add_argument("--top_p", type=float, default=None)
+    parser.add_argument("--temperature", type=float, default=None)
 
     return parser.parse_args()
 
@@ -88,6 +92,10 @@ def main():
         description_dict=description_dict,
         decontamination_ngrams_path=args.decontamination_ngrams_path,
         check_integrity=args.check_integrity,
+        repetition_penalty=args.repetition_penalty,
+        top_k=args.top_k,
+        top_p=args.top_p,
+        temperature=args.temperature,
     )
 
     dumped = json.dumps(results, indent=2)

@@ -85,6 +85,10 @@ class HuggingFaceAutoLM(BaseLM):
         peft: str = None,
         load_in_8bit: Optional[bool] = False,
         trust_remote_code: Optional[bool] = False,
+        repetition_penalty=None,
+        top_k=None,
+        top_p=None,
+        temperature=None,
     ):
         """Initializes a HuggingFace `AutoModel` and `AutoTokenizer` for evaluation.
         Args:
@@ -212,6 +216,12 @@ class HuggingFaceAutoLM(BaseLM):
             self._device = self.model.hf_device_map["lm_head"]
         if not use_accelerate:
             self.model.to(self._device)
+            
+        #生成阶段解码超参数
+        self.repetition_penalty=repetition_penalty
+        self.top_k=top_k
+        self.top_p=top_p
+        self.temperature=temperature
 
     def _create_auto_model(
         self,
@@ -468,6 +478,7 @@ class AutoCausalLM(HuggingFaceAutoLM):
             self.tokenizer, stop, input_ids.shape[1], input_ids.shape[0]
         )
 
+        where_do_sample=True if (self.top_k!=None) or (self.top_p!=None) else False
         generations = self.model.generate(
             input_ids=input_ids,
             attention_mask=attention_mask,
@@ -476,7 +487,11 @@ class AutoCausalLM(HuggingFaceAutoLM):
             # of new tokens to generate, excluding the current number of tokens.
             max_new_tokens=max_tokens,
             stopping_criteria=stopping_criteria,
-            do_sample=False,
+            do_sample=where_do_sample,
+            repetition_penalty=self.repetition_penalty,
+            top_k=self.top_k,
+            top_p=self.top_p,
+            temperature=self.temperature
         )
         return utils.select_continuation_from_batch_left_padding(
             generations, max_context_size=inputs["input_ids"].size(1)
@@ -640,13 +655,18 @@ class AutoSeq2SeqLM(HuggingFaceAutoLM):
         stopping_criteria = stop_sequences_criteria(
             self.tokenizer, stop, 1, input_ids.shape[0]
         )
-
+        
+        where_do_sample=True if (self.top_k!=None) or (self.top_p!=None) else False
         generations = self.model.generate(
             input_ids=input_ids,
             attention_mask=attention_mask,
             max_new_tokens=max_tokens,
             stopping_criteria=stopping_criteria,
-            do_sample=False,
+            do_sample=where_do_sample,
+            repetition_penalty=self.repetition_penalty,
+            top_k=self.top_k,
+            top_p=self.top_p,
+            temperature=self.temperature
         )
         return generations
 
