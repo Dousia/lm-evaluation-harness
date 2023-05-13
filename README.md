@@ -8,7 +8,7 @@
 
 **任务文件在lm-evaluation-harness/lm_eval/tasks中，数据集路径在对应任务文件的DATASET_PATH变量中设置。**
 
-- 生成任务
+- 通用问答能力
 
 |注册名|任务文件|说明|评价指标|
 |:----:|:----|:----:|:-----:|
@@ -19,8 +19,9 @@
 |注册名|任务文件|说明|评价指标|
 |:----:|:----|:----:|:-----:|
 |nlpcc|nlpcc.py|文本摘要能力中文评测数据集nlpcc|bleu, chrf|
+|THUCNews|THUCNews.py|文本摘要能力中文清华新闻THUCNews数据|bleu, chrf|
 
-- 阅读理解任务
+- 阅读理解—成语填空
 
 |注册名|任务文件|说明|评价指标|
 |:----:|:----|:----:|:-----:|
@@ -43,7 +44,7 @@
 |注册名|任务文件|说明|评价指标|
 |:----:|:----|:----:|:-----:|
 |chnsenticorp|chnsenticorp.py|情感分析任务ChenSentiCorp|acc|
-
+|stock11_real_estate|stock11_real_estate.py| 情感分析任务, https://huggingface.co/datasets/kuroneko5943/stock11/raw/main/test/Real_estate.txt |acc|
 - - 毒害指标评测
 
 |注册名|任务文件|说明|评价指标|
@@ -56,6 +57,30 @@
 |:----:|:----|:----:|:-----:|
 | stereosetzh | stereosetzh.py |中文偏见数据集| acc |
 
+- 政治敏感指标评测
+
+|注册名|任务文件|说明|评价指标|
+|:----:|:----|:----:|:-----:|
+| politicsen | politicsen.py |中文政治敏感数据集| acc |
+
+
+- 推理能力指标评测
+
+|注册名|任务文件|说明|评价指标|
+|:----:|:----|:----:|:-----:|
+| mandarinograd | mandarinograd.py |中文维诺格拉德模式数据集Mandarinograd| acc |
+| CINLID | cinlid.py |中文成语语义推理数据集CINLID| acc |
+
+- 情感
+|    注册名    | 任务文件   |       说明         | 评价指标 |
+|:----:|:----|:----:|:-----:|
+| chinese_hotel | chinese_hotel.py | 中文酒店评价数据集[数据链接](https://github.com/NLPBLCU/Chinese-Multi-Target-Sentiment-Classification-Dataset) |   acc   |
+
+- 事实与幻觉评测
+
+|注册名|任务文件|说明|评价指标|
+|:----:|:----|:----:|:-----:|
+| CHEF| chef.py |[空]| acc |
 
 
 ## Overview

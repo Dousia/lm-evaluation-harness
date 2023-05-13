@@ -62,6 +62,12 @@ from . import pclue_dev_classify
 from . import pclue_dev_nli
 from . import pclue_dev_generate
 from . import pclue_dev_mrc
+from . import politicsen
+from . import mandarinograd
+from . import stock11_real_estate
+from . import cinlid
+from . import chef
+from . import chinese_hotel
 
 ########################################
 # Translation tasks
@@ -104,6 +110,12 @@ TASK_REGISTRY = {
     "pclue_dev_nli":pclue_dev_nli.Pclue_dev_nli,
     "pclue_dev_generate":pclue_dev_generate.Pclue_dev_generate,
     "pclue_dev_mrc":pclue_dev_mrc.Pclue_dev_mrc,
+    "politicsen":politicsen.PoliticSen,
+    "mandarinograd":mandarinograd.Mandarinograd,
+    "stock11_real_estate": stock11_real_estate.Stock11RealEstate,
+    "CINLID":cinlid.CINLID,
+    "CHEF":chef.CHEF,
+    "chinese_hotel":chinese_hotel.Chinese_hotel,
     # GLUE
     "cola": glue.CoLA,
     "mnli": glue.MNLI,
